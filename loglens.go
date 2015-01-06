@@ -12,15 +12,15 @@ Example:
   message := "Here is a Loglens Message"
 
   // You can be very explicit by creating the LogSource and Log structs manually
-  source := &amp;loglens.LogSource{Message: message, Username: "peacock", Tag: "golang", Type: "INFO"}
-  log := &amp;loglens.Log{Index: "peacock", Source: source, Type: "INFO"}
+  source := &loglens.LogSource{Message: message, Username: "peacock", Tag: "golang", Type: "INFO"}
+  log := &loglens.Log{Index: "peacock", Source: source, Type: "INFO"}
   result, err := client.Log(log)
   fmt.Println(result, err)
 
   // You can use the built-in .Info, .Warn and .Error methods from LoglensClient
   // to skip having to manually define the Type.
-  source = &amp;loglens.LogSource{Message: message, Username: "peacock"}
-  log = &amp;loglens.Log{Index: "peacock", Source: source}
+  source = &loglens.LogSource{Message: message, Username: "peacock"}
+  log = &loglens.Log{Index: "peacock", Source: source}
   result, err = client.Error(log)
   fmt.Println(result, err)
 
@@ -78,12 +78,12 @@ func NewLoglensClient() *LoglensClient {
 }
 
 func (l *LoglensClient) SimpleLog(logType, message, index string) (r scribe.ResultCode, err error) {
-  log := &amp;Log{Source: &amp;LogSource{Message: message} , Index: index, Type: logType}
+  log := &Log{Source: &LogSource{Message: message}, Index: index, Type: logType}
   return l.Log(log)
 }
 
 func LoglensClientFactory(category string, scribe *scribe.ScribeClient) *LoglensClient {
-  return &amp;LoglensClient{Category: category, Scribe: scribe}
+  return &LoglensClient{Category: category, Scribe: scribe}
 }
 
 func NewScribeClientFactory(host, port string) *scribe.ScribeClient {
@@ -119,7 +119,7 @@ func (l *LoglensClient) Log(log *Log) (r scribe.ResultCode, err error) {
 }
 
 func (l *LoglensClient) RawLog(message string) (r scribe.ResultCode, err error) {
-  return l.Scribe.Log([]*scribe.LogEntry{&amp;scribe.LogEntry{Category: l.Category, Message: message}})
+  return l.Scribe.Log([]*scribe.LogEntry{&scribe.LogEntry{Category: l.Category, Message: message}})
 }
 
 func (l *LoglensClient) Info(log *Log) (r scribe.ResultCode, err error) {
